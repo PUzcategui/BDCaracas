@@ -1,6 +1,7 @@
 import Usuario from "../models/usuario.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { TOKEN_SECRET } from "../config.js";
 import { createAccessToken } from "../libs/jwt.js";
 
 export const register = async (req, res) => {
@@ -28,7 +29,7 @@ export const register = async (req, res) => {
       id: usuarioSaved._id,
     });
 
-    res.cookie("token", token)
+    res.cookie("token", token);
 
     res.json({
       id: usuarioSaved._id,
@@ -76,9 +77,31 @@ export const login = async (req, res) => {
   }
 };
 
+export const profile = async (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.send(false);
+
+  jwt.verify(token, TOKEN_SECRET, async (error, user) => {
+    if (error) return res.sendStatus(401);
+
+    const usuarioFound = await Usuario.findById(user.id);
+    if (!usuarioFound) return res.sendStatus(401);
+
+    return res.json({
+      id: usuarioFound._id,
+      nombre: usuarioFound.nombre,
+      apellido: usuarioFound.apellido,
+      email: usuarioFound.email,
+      telefono: usuarioFound.telefono,
+    });
+  });
+};  
+
 export const logout = async (req, res) => {
   res.cookie("token", "", {
     expires: new Date(0),
   });
   return res.sendStatus(200);
 };
+
+

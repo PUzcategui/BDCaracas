@@ -1,27 +1,26 @@
 import mongoose from "mongoose";
 
-const mascotaSchema = new mongoose.Schema(
+const servicioSchema = new mongoose.Schema(
   {
-    iddueño: {
+    idservicio: {
       type: mongoose.Types.ObjectId,
       ref: "Usuario",
-      required:true,
     },
     nombre: {
       type: String,
       required: true,
       trim: true,
     },
-    raza: {
+    descripcion: {
       type: String,
       required: true,
       trim: true,
     },
-    genero: {
-      type: String,
+    tarifa: {
+      type: Number,
       required: true,
     },
   }
 );
 
-export default mongoose.model("Mascota", mascotaSchema);
+export default mongoose.model("Servicio", servicioSchema);

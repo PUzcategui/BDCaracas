@@ -1,48 +1,41 @@
-import User from "../models/user.model.js";
+import Usuario from "../models/usuario.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { TOKEN_SECRET } from "../config.js";
 import { createAccessToken } from "../libs/jwt.js";
 
 export const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-
-    const userFound = await User.findOne({ email });
-
-    if (userFound)
-      return res.status(400).json({
-        message: ["The email is already in use"],
-      });
+   const { cedula, nombre, apellido, email, telefono, password } = req.body;
 
     // hashing the password
     const passwordHash = await bcrypt.hash(password, 10);
 
     // creating the user
-    const newUser = new User({
-      username,
+    const newUsuario = new Usuario({
+      cedula,
+      nombre,
+      apellido,
       email,
+      telefono,
       password: passwordHash,
     });
 
     // saving the user in the database
-    const userSaved = await newUser.save();
+    const usuarioSaved = await newUsuario.save();
 
     // create access token
     const token = await createAccessToken({
-      id: userSaved._id,
+      id: usuarioSaved._id,
     });
 
-    res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
-    });
+    res.cookie("token", token)
 
     res.json({
-      id: userSaved._id,
-      username: userSaved.username,
-      email: userSaved.email,
+      id: usuarioSaved._id,
+      nombre: usuarioSaved.nombre,
+      apellido: usuarioSaved.apellido,
+      email: usuarioSaved.email,
+      telefono: usuarioSaved.telefono,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -52,14 +45,14 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const userFound = await User.findOne({ email });
+    const usuarioFound = await Usuario.findOne({ email });
 
-    if (!userFound)
+    if (!usuarioFound)
       return res.status(400).json({
         message: ["The email does not exist"],
       });
 
-    const isMatch = await bcrypt.compare(password, userFound.password);
+    const isMatch = await bcrypt.compare(password, usuarioFound.password);
     if (!isMatch) {
       return res.status(400).json({
         message: ["The password is incorrect"],
@@ -67,48 +60,24 @@ export const login = async (req, res) => {
     }
 
     const token = await createAccessToken({
-      id: userFound._id,
-      username: userFound.username,
-    });
+      id: usuarioFound._id});
 
-    res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
-    });
+    res.cookie("token", token)
 
     res.json({
-      id: userFound._id,
-      username: userFound.username,
-      email: userFound.email,
+      id: usuarioFound._id,
+      nombre: usuarioFound.nombre,
+      apellido: usuarioFound.apellido,
+      email: usuarioFound.email,
+      telefono: usuarioFound.telefono,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-export const verifyToken = async (req, res) => {
-  const { token } = req.cookies;
-  if (!token) return res.send(false);
-
-  jwt.verify(token, TOKEN_SECRET, async (error, user) => {
-    if (error) return res.sendStatus(401);
-
-    const userFound = await User.findById(user.id);
-    if (!userFound) return res.sendStatus(401);
-
-    return res.json({
-      id: userFound._id,
-      username: userFound.username,
-      email: userFound.email,
-    });
-  });
-};
-
 export const logout = async (req, res) => {
   res.cookie("token", "", {
-    httpOnly: true,
-    secure: true,
     expires: new Date(0),
   });
   return res.sendStatus(200);

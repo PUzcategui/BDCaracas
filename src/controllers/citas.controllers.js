@@ -2,8 +2,17 @@ import Cita from "../models/cita.model.js";
 
 export const getCitas = async (req, res) => {
   try {
-    const citas = await Cita.find({ user : req.user.id }).populate("usuario");
-    res.json(Citas);
+    const citas = await Cita.find({ iddueño : req.user.id }).populate('iddueño idmascota idespecialista idservicio');
+    res.json(citas);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getCitasEspecialista = async (req, res) => {
+  try {
+    const citas = await Cita.find({ idespecialista : req.user.id }).populate('iddueño idmascota idespecialista idservicio');
+    res.json(citas);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -11,8 +20,9 @@ export const getCitas = async (req, res) => {
 
 export const createCita = async (req, res) => {
   try {
+    const { idmascota, idespecialista, idservicio, fecha, costototal} = req.body;
     const newCita = new Cita({
-      iddueño,
+      iddueño: req.user.id,
       idmascota,
       idespecialista,
       idservicio,
@@ -40,10 +50,10 @@ export const deleteCita = async (req, res) => {
 
 export const updateCita = async (req, res) => {
   try {
-    const { iddueño, idmascota, idespecialista, idservicio, fecha, costototal } = req.body;
+    const { idmascota, idespecialista, idservicio, fecha, costototal } = req.body;
     const citaUpdated = await Cita.findOneAndUpdate(
       { _id: req.params.id },
-      { iddueño, idmascota, idespecialista, idservicio, fecha, costototal },
+      { idmascota, idespecialista, idservicio, fecha, costototal },
       { new: true }
     );
     return res.json(citaUpdated);

@@ -2,7 +2,7 @@ import Mascota from "../models/mascota.model.js";
 
 export const getMascotas = async (req, res) => {
   try {
-    const mascotas = await Mascota.find({ user : req.user.id }).populate("usuario");
+    const mascotas = await Mascota.find({ iddueño : req.user.id }).populate('iddueño');
     res.json(mascotas);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -11,6 +11,7 @@ export const getMascotas = async (req, res) => {
 
 export const createMascota = async (req, res) => {
   try {
+    const { nombre, raza, genero } = req.body;
     const newMascota = new Mascota({
       iddueño: req.user.id,
       nombre,
@@ -38,10 +39,10 @@ export const deleteMascota = async (req, res) => {
 
 export const updateMascota = async (req, res) => {
   try {
-    const { iddueño, nombre, raza, genero } = req.body;
+    const { nombre, raza, genero } = req.body;
     const mascotaUpdated = await Mascota.findOneAndUpdate(
       { _id: req.params.id },
-      { iddueño, nombre, raza, genero },
+      { nombre, raza, genero },
       { new: true }
     );
     return res.json(mascotaUpdated);

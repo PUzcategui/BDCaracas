@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 
 const servicioSchema = new mongoose.Schema(
   {
-    idservicio: {
-      type: mongoose.Types.ObjectId,
-      ref: "Usuario",
-    },
     nombre: {
       type: String,
       required: true,

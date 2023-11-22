@@ -7,12 +7,14 @@ import {
   updateMascota,
 } from "../controllers/mascotas.controllers.js";
 import { authRequired } from "../middlewares/validateToken.middleware.js";
+import { validateSchema } from "../middlewares/validator.middleware.js";
+import { createMascotaSchema } from "../schemas/mascota.schema.js";
 
 const router = Router();
 
 router.get("/mascotas", authRequired, getMascotas);
 
-router.post("/mascotas", authRequired, createMascota);
+router.post("/mascotas", authRequired, validateSchema(createMascotaSchema), createMascota);
 
 router.get("/mascotas/:id", authRequired, getMascota);
 

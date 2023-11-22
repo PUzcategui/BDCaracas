@@ -1,8 +1,14 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-  username: z.string({
-    required_error: "Username is required",
+  cedula: z.string({
+    required_error: "Cedula is required",
+  }),
+  nombre: z.string({
+    required_error: "Nombre is required",
+  }),
+  apellido: z.string({
+    required_error: "Apellido is required",
   }),
   email: z
     .string({
@@ -10,6 +16,10 @@ export const registerSchema = z.object({
     })
     .email({
       message: "Email is not valid",
+    }),
+    telefono: z
+    .string({
+      required_error: "Telefono is required",
     }),
   password: z
     .string({

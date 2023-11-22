@@ -4,7 +4,7 @@ const citaSchema = new mongoose.Schema(
   {
     iddueño: {
       type: mongoose.Types.ObjectId,
-      ref: "Mascota",
+      ref: "Usuario",
     },
     idmascota: {
       type: mongoose.Types.ObjectId,

@@ -8,6 +8,12 @@ export const register = async (req, res) => {
   try {
    const { cedula, nombre, apellido, email, telefono, password } = req.body;
 
+   const usuarioFound = await Usuario.findOne({ email });
+
+    if (usuarioFound)
+      return res.status(400).json({
+        message: ["The email is already in use"],
+      });
     // hashing the password
     const passwordHash = await bcrypt.hash(password, 10);
 

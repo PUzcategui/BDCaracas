@@ -28,11 +28,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     roles: {
-      Cliente: {
+      usuario: {
         type: Number,
         default: 2001,
       },
-      Trabajador: Number
+      especialista: Number,
+      admin: Number,
     },
     password: {
       type: String,

@@ -11,10 +11,11 @@ export const getMascotas = async (req, res) => {
 
 export const createMascota = async (req, res) => {
   try {
-    const { nombre, raza, genero } = req.body;
+    const { nombre, tipo, raza, genero } = req.body;
     const newMascota = new Mascota({
       iddueño: req.user.id,
       nombre,
+      tipo,
       raza,
       genero,
     });
@@ -39,10 +40,10 @@ export const deleteMascota = async (req, res) => {
 
 export const updateMascota = async (req, res) => {
   try {
-    const { nombre, raza, genero } = req.body;
+    const { nombre, tipo, raza, genero } = req.body;
     const mascotaUpdated = await Mascota.findOneAndUpdate(
       { _id: req.params.id },
-      { nombre, raza, genero },
+      { nombre, tipo, raza, genero },
       { new: true }
     );
     return res.json(mascotaUpdated);

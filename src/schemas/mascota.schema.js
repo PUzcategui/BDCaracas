@@ -4,6 +4,9 @@ export const createMascotaSchema = z.object({
   nombre: z.string({
     required_error: "Nombre is required",
   }),
+  tipo: z.string({
+    required_error: "Tipo is required",
+  }),
   raza: z.string({
     required_error: "Raza is required",
   }),

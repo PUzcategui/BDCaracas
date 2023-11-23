@@ -12,6 +12,11 @@ const mascotaSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    tipo: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     raza: {
       type: String,
       required: true,

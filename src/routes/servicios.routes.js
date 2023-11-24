@@ -6,20 +6,19 @@ import {
   updateServicio,
   deleteServicio,
 } from "../controllers/servicios.controllers.js";
-import { authRequired } from "../middlewares/validateToken.middleware.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { createServicioSchema } from "../schemas/servicio.schema.js";
 
 const router = Router();
 
-router.get("/servicios", authRequired, getServicios);
+router.get("/servicios", getServicios);
 
-router.post("/servicios", authRequired, validateSchema(createServicioSchema), createServicio);
+router.post("/servicios", validateSchema(createServicioSchema), createServicio);
 
-router.get("/servicios/:id", authRequired, getServicio);
+router.get("/servicios/:id", getServicio);
 
-router.put("/servicios/:id", authRequired, updateServicio);
+router.put("/servicios/:id", updateServicio);
 
-router.delete("/servicios/:id", authRequired, deleteServicio);
+router.delete("/servicios/:id", deleteServicio);
 
 export default router;

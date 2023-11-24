@@ -2,7 +2,7 @@ import Mascota from "../models/mascota.model.js";
 
 export const getMascotas = async (req, res) => {
   try {
-    const mascotas = await Mascota.find({ iddueño : req.user.id }).populate('iddueño');
+    const mascotas = await Mascota.find({ iddueño : req.params.id }).populate('iddueño');
     res.json(mascotas);
   } catch (error) {
     return res.status(500).json({ message: error.message });

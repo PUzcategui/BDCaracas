@@ -30,13 +30,6 @@ export const register = async (req, res) => {
     // saving the user in the database
     const usuarioSaved = await newUsuario.save();
 
-    // create access token
-    const token = await createAccessToken({
-      id: usuarioSaved._id,
-    });
-
-    res.cookie("token", token);
-
     res.json({
       id: usuarioSaved._id,
       nombre: usuarioSaved.nombre,
@@ -71,11 +64,6 @@ export const login = async (req, res) => {
       id: usuarioFound._id,
     });
 
-    res.cookie("token", token, {
-      sameSite: "none",
-      secure: true,
-    });
-
     res.json({
       id: usuarioFound._id,
       nombre: usuarioFound.nombre,
@@ -91,6 +79,7 @@ export const login = async (req, res) => {
 
 export const profile = async (req, res) => {
   const { token } = req.cookies;
+  console.log(token);
   if (!token) return res.send(false);
 
   jwt.verify(token, TOKEN_SECRET, async (error, user) => {

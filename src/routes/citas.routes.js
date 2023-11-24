@@ -7,18 +7,17 @@ import {
   getCitasEspecialista,
   updateCita,
 } from "../controllers/citas.controllers.js";
-import { authRequired } from "../middlewares/validateToken.middleware.js";
 
 const router = Router();
 
-router.get("/citas", authRequired, getCitas);
-router.get("/citasEspecialista", authRequired, getCitasEspecialista);
-router.post("/citas", authRequired, createCita);
+router.get("/citas", getCitas);
+router.get("/citasEspecialista", getCitasEspecialista);
+router.post("/citas", createCita);
 
-router.get("/citas/:id", authRequired, getCita);
+router.get("/citas/:id", getCita);
 
-router.put("/citas/:id", authRequired, updateCita);
+router.put("/citas/:id", updateCita);
 
-router.delete("/citas/:id", authRequired, deleteCita);
+router.delete("/citas/:id", deleteCita);
 
 export default router;

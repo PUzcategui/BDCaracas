@@ -6,9 +6,9 @@ import { createAccessToken } from "../libs/jwt.js";
 
 export const register = async (req, res) => {
   try {
-   const { cedula, nombre, apellido, email, telefono, password } = req.body;
+    const { cedula, nombre, apellido, email, telefono, password } = req.body;
 
-   const usuarioFound = await Usuario.findOne({ email });
+    const usuarioFound = await Usuario.findOne({ email });
 
     if (usuarioFound)
       return res.status(400).json({
@@ -43,6 +43,7 @@ export const register = async (req, res) => {
       apellido: usuarioSaved.apellido,
       email: usuarioSaved.email,
       telefono: usuarioSaved.telefono,
+      status: 200,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -67,9 +68,13 @@ export const login = async (req, res) => {
     }
 
     const token = await createAccessToken({
-      id: usuarioFound._id});
+      id: usuarioFound._id,
+    });
 
-    res.cookie("token", token)
+    res.cookie("token", token, {
+      sameSite: "none",
+      secure: true,
+    });
 
     res.json({
       id: usuarioFound._id,
@@ -77,6 +82,7 @@ export const login = async (req, res) => {
       apellido: usuarioFound.apellido,
       email: usuarioFound.email,
       telefono: usuarioFound.telefono,
+      status: 200,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -101,7 +107,7 @@ export const profile = async (req, res) => {
       telefono: usuarioFound.telefono,
     });
   });
-};  
+};
 
 export const logout = async (req, res) => {
   res.cookie("token", "", {
@@ -109,5 +115,3 @@ export const logout = async (req, res) => {
   });
   return res.sendStatus(200);
 };
-
-

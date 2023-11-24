@@ -2,7 +2,7 @@ import Servicio from "../models/servicio.model.js";
 
 export const getServicios = async (req, res) => {
   try {
-    const servicios = await Servicio.find( req.params.id );
+    const servicios = await Servicio.find();
     res.json(servicios);
   } catch (error) {
     return res.status(500).json({ message: error.message });

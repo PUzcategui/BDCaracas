@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get("/citas", getCitas);
+router.get("/citas/:id", getCitas);
 router.get("/citasEspecialista", getCitasEspecialista);
 router.post("/citas", createCita);
 

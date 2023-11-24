@@ -2,7 +2,7 @@ import Cita from "../models/cita.model.js";
 
 export const getCitas = async (req, res) => {
   try {
-    const citas = await Cita.find({ iddueño : req.user.id }).populate('iddueño idmascota idespecialista idservicio');
+    const citas = await Cita.find({ iddueño : req.params.id }).populate('iddueño idmascota idespecialista idservicio');
     res.json(citas);
   } catch (error) {
     return res.status(500).json({ message: error.message });

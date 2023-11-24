@@ -11,9 +11,9 @@ export const getMascotas = async (req, res) => {
 
 export const createMascota = async (req, res) => {
   try {
-    const { nombre, tipo, raza, genero } = req.body;
+    const { iddueño, nombre, tipo, raza, genero } = req.body;
     const newMascota = new Mascota({
-      iddueño: req.user.id,
+      iddueño,
       nombre,
       tipo,
       raza,

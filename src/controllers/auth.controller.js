@@ -60,10 +60,6 @@ export const login = async (req, res) => {
       });
     }
 
-    const token = await createAccessToken({
-      id: usuarioFound._id,
-    });
-
     res.json({
       id: usuarioFound._id,
       nombre: usuarioFound.nombre,

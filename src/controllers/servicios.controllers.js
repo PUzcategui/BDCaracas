@@ -1,4 +1,6 @@
+import { object } from "zod";
 import Servicio from "../models/servicio.model.js";
+import Usuario from "../models/usuario.model.js"
 
 export const getServicios = async (req, res) => {
   try {
@@ -55,6 +57,20 @@ export const getServicio = async (req, res) => {
     const servicio = await Servicio.findById(req.params.id);
     if (!servicio) return res.status(404).json({ message: "Servicio not found" });
     return res.json(servicio);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getEspecialistas = async (req, res) => {
+  try {
+    function encuentraMiRol(role) {
+      return role.especialista === 1987;
+    }
+    const usuarios = await Usuario.find();
+    const especialistas = usuarios.filter(roles => encuentraMiRol(roles.roles));
+    console.log(especialistas);
+    res.json(especialistas);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

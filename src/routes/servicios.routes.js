@@ -5,6 +5,7 @@ import {
   getServicio,
   updateServicio,
   deleteServicio,
+  getEspecialistas,
 } from "../controllers/servicios.controllers.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { createServicioSchema } from "../schemas/servicio.schema.js";
@@ -20,5 +21,7 @@ router.get("/servicios/:id", getServicio);
 router.put("/servicios/:id", updateServicio);
 
 router.delete("/servicios/:id", deleteServicio);
+
+router.get("/especialistas", getEspecialistas);
 
 export default router;

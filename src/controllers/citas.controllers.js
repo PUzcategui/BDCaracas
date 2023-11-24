@@ -20,9 +20,9 @@ export const getCitasEspecialista = async (req, res) => {
 
 export const createCita = async (req, res) => {
   try {
-    const { idmascota, idespecialista, idservicio, fecha, costototal} = req.body;
+    const { iddueño, idmascota, idespecialista, idservicio, fecha, costototal} = req.body;
     const newCita = new Cita({
-      iddueño: req.user.id,
+      iddueño,
       idmascota,
       idespecialista,
       idservicio,
